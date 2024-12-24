@@ -1,0 +1,1 @@
+Notes App është një aplikacion Android modern dhe i thjeshtë për t'u përdorur, i dizenjuar për t'ju ndihmuar të organizoni dhe menaxhoni shënimet tuaja në mënyrë efikase. Aplikacioni ofron një ndërfaqe të pastër dhe intuitive, duke u përshtatur për përdorues të çdo niveli, nga fillestarët deri tek ata me përvojë të avancuar.
