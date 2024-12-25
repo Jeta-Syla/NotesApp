@@ -1,27 +1,29 @@
 package com.example.pajisje;
 
 import android.annotation.SuppressLint;
+import android.widget.Toast;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import org.mindrot.jbcrypt.BCrypt;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
-import org.mindrot.jbcrypt.BCrypt;
+
+
 
 public class DB extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserData.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Table name and columns for user data
+    // Tabela per te dhenat e perdoruesit
     public static final String TABLE_USER = "user";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_PASSWORD = "password";
 
-    // Table name and columns for notes
+    // Tabela per Notes
     public static final String TABLE_NOTES = "notes";
     public static final String COLUMN_NOTE_ID = "note_id";
     public static final String COLUMN_NOTE_TITLE = "title";
@@ -31,17 +33,16 @@ public class DB extends SQLiteOpenHelper {
     public DB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create table for storing user data
+        // Tabela per ruajtjen e perdoruesit
         String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_EMAIL + " TEXT NOT NULL UNIQUE, " +
                 COLUMN_PASSWORD + " TEXT NOT NULL)";
         db.execSQL(CREATE_USER_TABLE);
 
-        // Create table for storing notes
+        // Tabela e krijuar per ruajtjen e Notes
         String CREATE_NOTES_TABLE = "CREATE TABLE " + TABLE_NOTES + " (" +
                 COLUMN_NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NOTE_TITLE + " TEXT NOT NULL, " +
@@ -59,7 +60,7 @@ public class DB extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Method to insert a new user into the database
+    // Metoda per te shtuar nje perdorues ne databaze
     public long addUser(String email, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -70,7 +71,7 @@ public class DB extends SQLiteOpenHelper {
         return db.insert(TABLE_USER, null, values);
     }
 
-    // Method to check if email exists (for login or forgot password)
+    // Metoda per emailin ekzizstues (for login or forgot password)
     public boolean checkEmailExists(String email) {
         try (SQLiteDatabase db = this.getReadableDatabase()) {
             String query = "SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_EMAIL + " = ?";
@@ -80,7 +81,7 @@ public class DB extends SQLiteOpenHelper {
         }
     }
 
-    // Method to validate user login
+    // Metoda per te vertetuar hyrjen e perdoruesit
     public boolean validateUser(String email, String password) {
         String hashedPassword = getPassword(email); // Get hashed password from DB
 
@@ -112,7 +113,7 @@ public class DB extends SQLiteOpenHelper {
     }
 
 
-    // Add note method
+    // Metoda per te shtuar Notes
     public long addNote(String title, String content, int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -123,7 +124,7 @@ public class DB extends SQLiteOpenHelper {
         return db.insert(TABLE_NOTES, null, values);
     }
 
-    // Update note method
+    // Metoda per te bere ndryshime ne notes
     public int updateNote(int noteId, String title, String content) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
