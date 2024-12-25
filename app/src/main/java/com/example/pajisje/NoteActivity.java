@@ -1,22 +1,21 @@
 package com.example.pajisje;
 
 import android.app.AlertDialog;
+import android.widget.EditText;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
 import java.util.List;
+import android.widget.ListView;
+import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Toast;
+
 
 public class NoteActivity extends AppCompatActivity {
 
@@ -40,6 +39,14 @@ public class NoteActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.saveButton);
         EditText titleEditText = findViewById(R.id.titleEditText);
         EditText contentEditText = findViewById(R.id.contentEditText);
+        Button cancelButton = findViewById(R.id.cancelButton);
+
+        cancelButton.setOnClickListener(v -> {
+            // Navigate to MainActivity
+            Intent intent = new Intent(NoteActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish(); // Optional: Close SignUpActivity if you don't want it in the back stack
+        });
 
         saveButton.setOnClickListener(v -> {
             String newNote = titleEditText.getText().toString().trim() + ": \n" + contentEditText.getText().toString().trim();
@@ -52,25 +59,17 @@ public class NoteActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(NoteActivity.this, "Enter a valid note", Toast.LENGTH_SHORT).show();
             }
-        });
-
-        Button cancelButton = findViewById(R.id.cancelButton);
-
-        cancelButton.setOnClickListener(v -> {
-            // Navigate to MainActivity
-            Intent intent = new Intent(NoteActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish(); // Optional: Close SignUpActivity if you don't want it in the back stack
-        });
+        }); 
     }
 
     private class CustomAdapter extends BaseAdapter {
 
         private class ViewHolder {
             TextView noteTextView;
+            Button viewContentButton;
             Button editButton;
             Button deleteButton;
-            Button viewContentButton; // New button for viewing content
+            
         }
 
         @Override
@@ -135,21 +134,7 @@ public class NoteActivity extends AppCompatActivity {
                 builder.show();
             });
 
-            // Handle Delete button
-            holder.deleteButton.setOnClickListener(v -> {
-                new AlertDialog.Builder(NoteActivity.this)
-                        .setTitle("Delete Note")
-                        .setMessage("Are you sure you want to delete this note?")
-                        .setPositiveButton("Yes", (dialog, which) -> {
-                            notesList.remove(position);
-                            notifyDataSetChanged();
-                            Toast.makeText(NoteActivity.this, "Note deleted", Toast.LENGTH_SHORT).show();
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-            });
-
-            // Handle View Content button
+            // View Button
             holder.viewContentButton.setOnClickListener(v -> {
                 // Krijo një Intent për të hapur NoteDetailActivity
                 Intent intent = new Intent(NoteActivity.this, NoteDetailActivity.class);
@@ -162,6 +147,19 @@ public class NoteActivity extends AppCompatActivity {
                 intent.putExtra("noteTitle", noteTitle); // Dërgo titullin
                 intent.putExtra("noteContent", noteContent); // Dërgo përmbajtjen
                 startActivity(intent); // Hapni NoteDetailActivity
+            });
+            // Butoni per te fshire Notes
+            holder.deleteButton.setOnClickListener(v -> {
+                new AlertDialog.Builder(NoteActivity.this)
+                        .setTitle("Delete Note")
+                        .setMessage("Are you sure you want to delete this note?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            notesList.remove(position);
+                            notifyDataSetChanged();
+                            Toast.makeText(NoteActivity.this, "Note deleted", Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
             });
 
             return convertView;
