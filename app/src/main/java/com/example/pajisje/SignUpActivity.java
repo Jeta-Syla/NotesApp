@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.widget.Toast;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
         confirmPasswordLayout = findViewById(R.id.confirmPasswordLayout); // Corrected ID
         loginButton = findViewById(R.id.loginButton);
 
+        //Butoni Login
         loginButton.setOnClickListener(v -> {
             // Navigate to MainActivity
             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
@@ -62,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        // Check if email already exists
+        // Kontrollo nese email funksionon
         if (database.checkEmailExists(email)) {
             emailLayout.setError("Email is already registered");
             return;
@@ -121,11 +123,7 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
-    // Navigate to login screen (for demonstration purposes)
-    /*private void navigateToLogin() {
-        // Navigate to the login screen (this is just a placeholder)
-        Toast.makeText(this, "Navigate to Login Screen (Implement this)", Toast.LENGTH_SHORT).show();
-    }*/
+    //Per t'u kthyer ne Login perseri
     private void navigateToLogin() {
         // Create an Intent to navigate to MainActivity (login page)
         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
